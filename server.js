@@ -1,7 +1,7 @@
+//dependencies
 var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
-var request = require("require");
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -18,15 +18,6 @@ var app = express();
 
 // Configure middleware
 
-// Use morgan logger for logging requests
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
-  flags: 'a'
-});
-
-app.use(logger("combined", {
-  stream: accessLogStream
-}));
-
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({
   extended: true
@@ -35,24 +26,25 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/week18Populater");
+mongoose.connect("mongodb://localhost/db");
 
 // Routes
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
   // First, we grab the body of the html with request
-  axios.get("http://https://http://www.churchtimeline.com//").then(function (response) {
+  axios.get("http://www.churchtimeline.com//").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function (i, element) {
+    // Now, we grab every li within an .panel-body tag, and do the following:
+    $(".panel-body li").each(function (i, element) {
       // Save an empty result object
       var result = {};
+      console.log(result);
 
       // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
+      result.timeline = $(this)
         .children("a")
         .text();
 
