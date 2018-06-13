@@ -24,7 +24,7 @@ $.getJSON("/articles", function(data) {
       .then(function(data) {
         console.log(data);
         // The title of the article
-        $("#notes").append("<h2>" + data.title + "</h2>");
+        $("#notes").append("<h2>" + data.timeline + "</h2>");
         // An input to enter a new title
         $("#notes").append("<input id='timelineinput' name='timeline' >");
         // A textarea to add a new note body
@@ -53,7 +53,7 @@ $.getJSON("/articles", function(data) {
       url: "/articles/" + thisId,
       data: {
         // Value taken from title input
-        title: $("#timelineinput").val(),
+        timeline: $("#timelineinput").val(),
         // Value taken from note textarea
         body: $("#bodyinput").val()
       }
